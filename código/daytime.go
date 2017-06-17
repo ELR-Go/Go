@@ -24,24 +24,20 @@ func geraDaytime() string {
 func gerenciaConexao(conn net.Conn) {
 	daytime := geraDaytime()
 
-	// Send current daytime to client
 	conn.Write([]byte(daytime))
 	conn.Close()
 }
 
 func main() {
-	// Create listening socket
-	listen, err := net.Listen("tcp", "127.0.0.1:13")
+	escuta, err := net.Listen("tcp", "127.0.0.1:13")
 	checaErro(err)
-	defer listen.Close()
+	defer escuta.Close()
 
 	fmt.Println("** Servidor daytime em funcionamento! **")
-	fmt.Printf("Escutando por conexões em %s\n", listen.Addr().String())
+	fmt.Printf("Escutando por conexões em %s\n", escuta.Addr().String())
 
-	// Listen for incoming connections
 	for {
-		// Create a new socket for the connection
-		conn, err := listen.Accept()
+		conn, err := escuta.Accept()
 		checaErro(err)
 
 		fmt.Printf("  Conexão aceita de %s\n", conn.RemoteAddr().String())
